@@ -1,0 +1,38 @@
+services:
+  icecast:
+    build: ./icecast
+    restart: unless-stopped
+    environment:
+      ICECAST_SOURCE_PASSWORD: ${ICECAST_SOURCE_PASSWORD:-hackme}
+      ICECAST_ADMIN_PASSWORD: ${ICECAST_ADMIN_PASSWORD:-hackme}
+      ICECAST_RELAY_PASSWORD: ${ICECAST_RELAY_PASSWORD:-hackme}
+      ICECAST_HOSTNAME: ${ICECAST_HOSTNAME:-localhost}
+    ports:
+      - "8000:8000" # direct stream + admin at /admin
+
+  liquidsoap:
+    image: savonet/liquidsoap:v2.2.5
+    restart: unless-stopped
+    depends_on:
+      - icecast
+    command: ["/radio/radio.liq"]
+    environment:
+      ICECAST_HOST: icecast
+      ICECAST_SOURCE_PASSWORD: ${ICECAST_SOURCE_PASSWORD:-hackme}
+      LIVE_PASSWORD: ${LIVE_PASSWORD:-hackme}
+    volumes:
+      - ./liquidsoap:/radio:ro
+      - ./music:/music:ro
+    ports:
+      - "8005:8005" # live DJ input (harbor)
+
+  web:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - icecast
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8080:80"

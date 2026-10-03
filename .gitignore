@@ -1,0 +1,4 @@
+.env
+music/*
+!music/.gitkeep
+.DS_Store

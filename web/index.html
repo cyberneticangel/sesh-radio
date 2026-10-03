@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SESH RADIO</title>
+  <meta name="description" content="Music from beyond the grave.">
+  <link rel="icon" href="assets/sesh-logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/three.module.min.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+  <img class="fallback-logo" src="assets/sesh-logo.png" alt="">
+  <div class="flash" aria-hidden="true"></div>
+
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <main class="hud">
+    <p class="status"><span class="dot"></span><span id="onAirText">Silent</span></p>
+    <h1 class="sr-only">SESH Radio</h1>
+
+    <section class="plaque" aria-label="Player">
+      <div class="deck">
+        <button class="play" id="play" type="button" aria-label="Play">
+          <svg class="icon icon-play" viewBox="0 0 10 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 1h2v7H2zM4 2h2v5H4zM6 3h2v3H6zM8 4h1v1H8z"/></svg>
+          <svg class="icon icon-pause" viewBox="0 0 10 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 1h2v7H2zM6 1h2v7H6z"/></svg>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+
+        <div class="now" aria-live="polite">
+          <p class="label">Now Tolling</p>
+          <div class="marquee"><span id="nowPlaying">— silence —</span></div>
+          <p class="meta">
+            <span><span class="meta-k">Souls</span> <span id="listeners">0</span></span>
+            <span class="sep">/</span>
+            <span><span id="bitrate">192</span> <span class="meta-k">kbps</span></span>
+          </p>
+        </div>
+      </div>
+
+      <div class="volume">
+        <button class="mute" id="mute" type="button" aria-label="Mute">
+          <svg viewBox="0 0 10 9" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 3h2v3H1zM3 2h1v5H3zM4 1h1v7H4z"/><path class="waves" d="M6 3h1v3H6zM8 1h1v7H8z"/></svg>
+        </button>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+      </div>
+    </section>
+
+    <footer class="foot">Abandon all hope, ye who tune in</footer>
+  </main>
+
+  <audio id="audio" preload="none" crossorigin="anonymous"></audio>
+  <script src="app.js"></script>
+  <script type="module" src="scene.js"></script>
+</body>
+</html>
